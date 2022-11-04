@@ -19,11 +19,9 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Cafe.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cafe.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cafe.Image)
+        
+        <dd class = "col-sm-12">
+          <img src="@Model.Cafe.Image" class="card-img-top" alt="cafe">
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Cafe.Description)
@@ -31,18 +29,16 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Cafe.Description)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cafe.User)
-        </dt>
     </dl>
     </div>
+
+</div>
     @if (Model.User.Role == "user")
 {
     
-  
-    <div id="karzina" class="text-right col-4" style="position: sticky; top: 1px; z-index:  100; border: 2px solid groove"> </div>
+   <div id="karzina" class="text-right" style="position: sticky; top: 1px;border: 1px black"></div>
+
 }
-</div>
 <div> 
     @if (Model.User.Role == "Admin" || Model.User.Role == "prouser")
 {
@@ -53,35 +49,15 @@
 </div>
 
 <h2>Dishes</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Price
-            </th>
-            <th>
-               Description
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="row">
 @foreach (var item in Model.Dishes) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                 @if (Model.User.Role == "Admin" || Model.User.Role == "prouser")
+        
+    <div class="card col-3" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">@item.Name</h5>
+    <h6 class="card-subtitle mb-2 text-muted">@item.Price</h6>
+    <p class="card-text">@item.Description</p>
+     @if (Model.User.Role == "Admin" || Model.User.Role == "prouser")
 {
                 <a asp-action="Edit" asp-controller="Dishes" asp-route-id="@item.Id" asp-route-cafeId="@Model.Cafe.Id">Edit  |</a> 
                 <a asp-action="Details" asp-controller="Dishes" asp-route-id="@item.Id" asp-route-cafeId="@Model.Cafe.Id">Details  |</a> 
@@ -91,11 +67,10 @@
                     {
                         <input type="button" id="order" onclick="makeOrder('@item.Id','@Model.Cafe.Id')" value="Get korzina"/>
                     }
-                </td>
-        </tr>
+  </div>
+</div>
 }
-    </tbody>
-</table>
+</div>
 
 @section Scripts
 {

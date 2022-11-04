@@ -11,58 +11,41 @@
         <a asp-action="Create">Create New</a>
     </p>
 }
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Image
-            </th>
-            <th>
-              Description
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Cafes) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            @if (Model.CurUser.Role == "Admin")
-{
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-}
-        @if (Model.CurUser.Role == "prouser"&& Model.CurUser.Id ==@item.UserId)
-{
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-}
-                @if(Model.CurUser.Role == "user")
+
+<div class=row>
+    @foreach (var item in Model.Cafes)
+    {
+        <div class="card col-4" style="width: 18rem;">
+            <img src="@item.Image" class="card-img-top" alt="cafe">
+            <div class="card-body">
+                <h5 class="card-title">@item.Name</h5>
+                <p class="card-text">@item.Description</p>
+                @if (Model.CurUser.Role == "Admin")
                 {
-                   <td>
-                
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
-                </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
                 }
-             </tr>
-}
-    </tbody>
-</table>
-}
+                @if (Model.CurUser.Role == "prouser" && Model.CurUser.Id == @item.UserId)
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+                @if (Model.CurUser.Role == "user")
+                {
+                    <td>
+
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                    </td>
+                }
+            </div>
+        </div>
+    }        
+    </div>
+            
+    }
