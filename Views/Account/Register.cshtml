@@ -1,0 +1,108 @@
+﻿@model homework_64_Atai.ViewModels.RegisterViewModel
+
+<h2>Регистрация нового пользователя</h2>
+
+<form method="post" asp-controller="Account" asp-action="Register">
+
+   <div asp-validation-summary="ModelOnly"></div>
+
+   <div>
+       <input asp-for="Role" type="radio" id="workerAj" value="worker" checked>
+     
+    <label asp-for="Role">Worker</label>
+   </div>
+   <div>
+       <input asp-for="Role" type="radio" id="companyAj" value="company">
+    <label asp-for="Role">Company</label>
+   </div>
+@*   <div>
+       <strong><label asp-for="Role">Role</label></strong>
+    <select asp-for="Role">
+        <option value="Company" id="companyAj">Company</option>
+        <option  id="workerAj" value="Worker">Worker</option>
+    </select>
+   <span asp-validation-for="Role"></span>
+   </div>*@
+   <div>
+
+      <strong id="nameCom">Name</strong><br />
+
+       <input asp-for="UserName" />
+
+       <span asp-validation-for="UserName"></span>
+
+   </div>
+
+    <div>
+
+       <strong><label asp-for="PhoneNumber"></label></strong><br/>
+
+       <input asp-for="PhoneNumber" />
+
+       <span asp-validation-for="PhoneNumber"></span>
+
+   </div>
+
+   
+    <div>
+
+       <strong><label asp-for="Avatar"></label></strong><br />
+
+       <input id="ava" asp-for="Avatar" />
+
+       <span asp-validation-for="Avatar"></span>
+
+   </div>
+
+   <div>
+       <strong><label asp-for="Email"></label></strong><br />
+       <input asp-for="Email" />
+       <span asp-validation-for="Email"></span>
+   </div>
+
+
+   <div>
+
+       <strong><label asp-for="Password"></label></strong><br />
+
+       <input asp-for="Password" />
+
+       <span asp-validation-for="Password"></span>
+
+   </div>
+
+   <div>
+
+       <strong><label asp-for="ConfirmPassword"></label></strong><br />
+
+       <input asp-for="ConfirmPassword" />
+
+       <span asp-validation-for="ConfirmPassword"></span>
+
+   </div>
+   <div>
+
+       <input type="submit" value="Регистрация" />
+
+   </div>
+
+</form>
+
+@section Scripts
+
+{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+
+           $('#companyAj').on('click',function (event) {
+               $('#nameCom').html("Company Name");
+           });
+           $('#workerAj').on('click',function (event) {   
+               $('#nameCom').html("Worker Name");
+           });
+
+    </script>
+    @{
+       await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
