@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using homework_64_Atai.Models;
+using homework_64_Atai.ViewModels;
 
 namespace homework_64_Atai.Controllers
 {
@@ -157,6 +158,55 @@ namespace homework_64_Atai.Controllers
         private bool DishExists(int id)
         {
             return _context.Dishes.Any(e => e.Id == id);
+        }
+        public async Task<IActionResult> MakeOrder(int dishId,int cafeId)
+        {
+
+            var dish = await _context.Dishes.FindAsync(dishId);
+            int temp = 0;
+            var korzinalist = _context.Korzinas.Include(d => d.Dish).ToArray();
+            if (_context.Korzinas.ToList().Count > 0)
+            {
+                foreach (var k in korzinalist)
+                {
+                    if (k.Dish.Id == dishId)
+                    {
+                        k.amountOfDish++;
+                    }
+                }
+                foreach (var k in korzinalist)
+                {
+                    if (k.Dish.Id == dishId)
+                    {
+                        temp = 1;
+                    }
+                }
+            }
+                if (temp == 0)
+            {
+                var k = new Korzina
+                {
+                    amountOfDish = 1,
+                    Dish = dish,
+                    CaffeId = cafeId
+                };
+                _context.Korzinas.Add(k);
+                _context.SaveChanges();
+            }
+            double sum = 0;
+            var korzinas = _context.Korzinas.Where(k=> k.CaffeId==cafeId).ToList();
+            foreach (var k in korzinas)
+            {
+                sum = sum + (k.amountOfDish * k.Dish.Price);
+            }
+            _context.SaveChanges();
+            var model = new KorzinaViewModel
+            {
+                KorzinaList = korzinas,
+                sumOfKorzina = sum
+            };
+          
+            return PartialView("KorzinaParView", model);
         }
     }
 }

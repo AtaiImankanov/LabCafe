@@ -97,7 +97,7 @@ namespace homework_64_Atai
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Cafes}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

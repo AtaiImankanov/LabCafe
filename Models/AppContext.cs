@@ -8,6 +8,7 @@ namespace homework_64_Atai.Models
     {
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Cafe> Cafes { get; set; }
+        public DbSet<Korzina> Korzinas { get; set; }
         public AppContext(DbContextOptions<AppContext> options) : base(options)
         {
 

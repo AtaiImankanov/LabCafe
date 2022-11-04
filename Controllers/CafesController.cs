@@ -25,11 +25,13 @@ namespace homework_64_Atai.Controllers
         public async Task<IActionResult> Index()
         {
             var appContext = await _context.Cafes.Include(c => c.User).ToListAsync();
-            User u = await _userManager.GetUserAsync(User);
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            int idUser = Convert.ToInt32(_userManager.GetUserId(currentUser));
+            var u = _userManager.Users.FirstOrDefault(x => x.Id == idUser);
 
             var model = new CafeIndexViewModel
             {
-                User = u,
+                CurUser = u,
                 Cafes = appContext
             };
             return View(model);
@@ -38,7 +40,9 @@ namespace homework_64_Atai.Controllers
         // GET: Cafes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            User u = await _userManager.GetUserAsync(User);
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            int idUser = Convert.ToInt32(_userManager.GetUserId(currentUser));
+            var u = _userManager.Users.FirstOrDefault(x => x.Id == idUser);
             List<Dish> dishes = await _context.Dishes.Where(c => c.CafeId == id).OrderBy(c => c.Price).ToListAsync();
             if (id == null)
             {
@@ -77,7 +81,9 @@ namespace homework_64_Atai.Controllers
             if (ModelState.IsValid)
             {
 
-                User u = await _userManager.GetUserAsync(User);
+                System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+                int idUser = Convert.ToInt32(_userManager.GetUserId(currentUser));
+                var u = _userManager.Users.FirstOrDefault(x => x.Id == idUser);
                 cafe.UserId = u.Id; 
                 _context.Add(cafe);
                 await _context.SaveChangesAsync();

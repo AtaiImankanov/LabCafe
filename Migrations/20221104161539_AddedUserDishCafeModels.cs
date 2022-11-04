@@ -43,7 +43,6 @@ namespace homework_64_Atai.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Avatar = table.Column<string>(nullable: true),
                     Role = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -201,6 +200,26 @@ namespace homework_64_Atai.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Korzinas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DishId = table.Column<int>(nullable: true),
+                    amountOfDish = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Korzinas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Korzinas_Dishes_DishId",
+                        column: x => x.DishId,
+                        principalTable: "Dishes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -247,6 +266,11 @@ namespace homework_64_Atai.Migrations
                 name: "IX_Dishes_CafeId",
                 table: "Dishes",
                 column: "CafeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Korzinas_DishId",
+                table: "Korzinas",
+                column: "DishId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -267,10 +291,13 @@ namespace homework_64_Atai.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Dishes");
+                name: "Korzinas");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Dishes");
 
             migrationBuilder.DropTable(
                 name: "Cafes");

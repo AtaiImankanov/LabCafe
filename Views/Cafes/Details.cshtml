@@ -6,7 +6,10 @@
 
 <h1>Details</h1>
 
-<div>
+
+
+<div class=row>
+    <div class=col-7>
     <h4>Cafe</h4>
     <hr />
     <dl class="row">
@@ -32,6 +35,13 @@
             @Html.DisplayNameFor(model => model.Cafe.User)
         </dt>
     </dl>
+    </div>
+    @if (Model.User.Role == "user")
+{
+    
+  
+    <div id="karzina" class="text-right col-4" style="position: sticky; top: 1px; z-index:  100; border: 2px solid groove"> </div>
+}
 </div>
 <div> 
     @if (Model.User.Role == "Admin" || Model.User.Role == "prouser")
@@ -77,8 +87,23 @@
                 <a asp-action="Details" asp-controller="Dishes" asp-route-id="@item.Id" asp-route-cafeId="@Model.Cafe.Id">Details  |</a> 
                 <a asp-action="Delete" asp-controller="Dishes" asp-route-id="@item.Id" asp-route-cafeId="@Model.Cafe.Id">Delete</a>
 }
-            </td>
+                    @if(Model.User.Role == "user")
+                    {
+                        <input type="button" id="order" onclick="makeOrder('@item.Id','@Model.Cafe.Id')" value="Get korzina"/>
+                    }
+                </td>
         </tr>
 }
     </tbody>
 </table>
+
+@section Scripts
+{
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+     <script>
+          const makeOrder= function(dishId,cafeId) {
+              $('#karzina').load('@Url.Action("MakeOrder", "Dishes")?dishId=' + dishId +'&cafeId='+ cafeId);
+           }     
+     </script>
+
+}

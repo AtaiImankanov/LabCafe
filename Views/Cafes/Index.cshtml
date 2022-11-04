@@ -4,8 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-
-@if (Model.User.Role == "Admin" || Model.User.Role == "prouser")
+@if(User.Identity.IsAuthenticated){
+@if (Model.CurUser.Role == "Admin" || Model.CurUser.Role == "prouser")
 {
     <p>
         <a asp-action="Create">Create New</a>
@@ -38,7 +38,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-            @if (Model.User.Role == "Admin")
+            @if (Model.CurUser.Role == "Admin")
 {
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -46,7 +46,7 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
 }
-        @if (Model.User.Role == "prouser"&& Model.User.Id ==@item.UserId)
+        @if (Model.CurUser.Role == "prouser"&& Model.CurUser.Id ==@item.UserId)
 {
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -54,7 +54,15 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
 }
-        </tr>
+                @if(Model.CurUser.Role == "user")
+                {
+                   <td>
+                
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                </td>
+                }
+             </tr>
 }
     </tbody>
 </table>
+}

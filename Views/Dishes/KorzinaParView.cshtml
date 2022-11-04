@@ -1,0 +1,10 @@
+﻿@model homework_64_Atai.ViewModels.KorzinaViewModel
+
+<div>
+    Sum = @Model.sumOfKorzina
+</div>
+@foreach (var c in Model.KorzinaList)
+{
+  <div> Dish name @c.Dish.Name - Amount  @c.amountOfDish </div>
+  
+}

@@ -10,7 +10,7 @@ using homework_64_Atai.Models;
 namespace homework_64_Atai.Migrations
 {
     [DbContext(typeof(Models.AppContext))]
-    [Migration("20221104085700_AddedUserDishCafeModels")]
+    [Migration("20221104161539_AddedUserDishCafeModels")]
     partial class AddedUserDishCafeModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -202,6 +202,26 @@ namespace homework_64_Atai.Migrations
                     b.ToTable("Dishes");
                 });
 
+            modelBuilder.Entity("homework_64_Atai.Models.Korzina", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("DishId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("amountOfDish")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DishId");
+
+                    b.ToTable("Korzinas");
+                });
+
             modelBuilder.Entity("homework_64_Atai.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -211,9 +231,6 @@ namespace homework_64_Atai.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Avatar")
-                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -341,6 +358,13 @@ namespace homework_64_Atai.Migrations
                         .HasForeignKey("CafeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("homework_64_Atai.Models.Korzina", b =>
+                {
+                    b.HasOne("homework_64_Atai.Models.Dish", "Dish")
+                        .WithMany()
+                        .HasForeignKey("DishId");
                 });
 #pragma warning restore 612, 618
         }

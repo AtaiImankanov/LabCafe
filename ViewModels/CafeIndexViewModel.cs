@@ -5,7 +5,7 @@ namespace homework_64_Atai.ViewModels
 {
     public class CafeIndexViewModel
     {
-        public User User { get; set; }
+        public User CurUser { get; set; }
         public List<Cafe> Cafes { get; set; }
     }
 }
