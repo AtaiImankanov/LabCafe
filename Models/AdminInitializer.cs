@@ -17,7 +17,7 @@ namespace homework_64_Atai.Models
 
             string adminPassword = "adpassword";
 
-            var roles = new[] { "admin", "user" };
+            var roles = new[] { "admin", "user" ,"prouser" };
 
 
 

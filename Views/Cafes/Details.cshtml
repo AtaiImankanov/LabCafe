@@ -33,9 +33,12 @@
         </dt>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Cafe.Id">Edit</a> |
-    <a asp-action="Create" asp-controller="Dishes" asp-route-cafeId="@Model.Cafe.Id">Add dish</a> |
+<div> 
+    @if (Model.User.Role == "Admin" || Model.User.Role == "prouser")
+{
+    <a asp-action="Edit" asp-route-id="@Model.Cafe.Id">Edit  |</a> 
+    <a asp-action="Create" asp-controller="Dishes" asp-route-cafeId="@Model.Cafe.Id">Add dish  |</a> 
+}
     <a asp-action="Index">Back to List</a>
 </div>
 
@@ -68,9 +71,12 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a asp-action="Edit" asp-controller="Dishes" asp-route-id="@item.Id" asp-route-cafeId="@Model.Cafe.Id">Edit</a> |
-                <a asp-action="Details" asp-controller="Dishes" asp-route-id="@item.Id" asp-route-cafeId="@Model.Cafe.Id">Details</a> |
+                 @if (Model.User.Role == "Admin" || Model.User.Role == "prouser")
+{
+                <a asp-action="Edit" asp-controller="Dishes" asp-route-id="@item.Id" asp-route-cafeId="@Model.Cafe.Id">Edit  |</a> 
+                <a asp-action="Details" asp-controller="Dishes" asp-route-id="@item.Id" asp-route-cafeId="@Model.Cafe.Id">Details  |</a> 
                 <a asp-action="Delete" asp-controller="Dishes" asp-route-id="@item.Id" asp-route-cafeId="@Model.Cafe.Id">Delete</a>
+}
             </td>
         </tr>
 }

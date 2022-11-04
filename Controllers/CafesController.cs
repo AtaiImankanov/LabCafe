@@ -24,13 +24,21 @@ namespace homework_64_Atai.Controllers
         // GET: Cafes
         public async Task<IActionResult> Index()
         {
-            var appContext = _context.Cafes.Include(c => c.User);
-            return View(await appContext.ToListAsync());
+            var appContext = await _context.Cafes.Include(c => c.User).ToListAsync();
+            User u = await _userManager.GetUserAsync(User);
+
+            var model = new CafeIndexViewModel
+            {
+                User = u,
+                Cafes = appContext
+            };
+            return View(model);
         }
 
         // GET: Cafes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            User u = await _userManager.GetUserAsync(User);
             List<Dish> dishes = await _context.Dishes.Where(c => c.CafeId == id).OrderBy(c => c.Price).ToListAsync();
             if (id == null)
             {
@@ -47,7 +55,8 @@ namespace homework_64_Atai.Controllers
             var vndm = new CafeAndDishesViewModel
             {
                 Cafe = cafe,
-                Dishes = dishes
+                Dishes = dishes,
+                User = u
             };
             return View(vndm);
         }

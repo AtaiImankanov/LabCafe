@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 namespace homework_64_Atai.ViewModels
 {
-    public class CafeAndDishesViewModel
+    public class CafeIndexViewModel
     {
-        public Cafe Cafe { get; set; }
-        public List<Dish> Dishes { get; set; }
         public User User { get; set; }
+        public List<Cafe> Cafes { get; set; }
     }
 }
