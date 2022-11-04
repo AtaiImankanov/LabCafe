@@ -28,9 +28,11 @@ namespace homework_64_Atai
 
             {
 
+                var userManager = services.GetRequiredService<UserManager<User>>();
+
                 var rolesManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
 
-                await AdminInitializer.SeedAdminUser(rolesManager);
+                await AdminInitializer.SeedAdminUser(rolesManager, userManager);
 
             }
 
