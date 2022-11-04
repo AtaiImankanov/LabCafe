@@ -12,12 +12,10 @@ namespace LabInsta.Controllers
 
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly AppContext _context;
-        private string[] roles = new[] { "company", "worker" };
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, AppContext context)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
 
         {
-            _context = context;
+            
             _userManager = userManager;
 
             _signInManager = signInManager;
@@ -47,16 +45,10 @@ namespace LabInsta.Controllers
 
                 User user = new User
                 {
+                    Role="user",
                     Email = model.Email,
                     UserName = model.UserName,
-                    PhoneNumber = model.PhoneNumber,
-                    Avatar = model.Avatar,
-                    Role = model.Role
                 };
-                if (user.Avatar == null)
-                {
-                    user.Avatar = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/640px-Anonymous_emblem.svg.png";
-                }
                 var result = await _userManager.CreateAsync(user, model.Password);
                 
 
@@ -67,15 +59,7 @@ namespace LabInsta.Controllers
                 if (result.Succeeded)
 
                 {
-                    if (user.Role == "company")
-                    {
-                        await _userManager.AddToRoleAsync(user,"company");
-                    }
-                    else
-                    {
-                        await _userManager.AddToRoleAsync(user, "worker");
-                    }
-                   
+                    await _userManager.AddToRoleAsync(user,"user");
                     await _signInManager.SignInAsync(user, false);
                     
 

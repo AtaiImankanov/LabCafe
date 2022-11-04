@@ -6,15 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using homework_64_Atai.Models;
+using Microsoft.AspNetCore.Identity;
+using homework_64_Atai.ViewModels;
 
 namespace homework_64_Atai.Controllers
 {
     public class CafesController : Controller
     {
         private readonly Models.AppContext _context;
-
-        public CafesController(Models.AppContext context)
+        private readonly UserManager<User> _userManager;
+        public CafesController(Models.AppContext context, UserManager<User> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -28,6 +31,7 @@ namespace homework_64_Atai.Controllers
         // GET: Cafes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            List<Dish> dishes = await _context.Dishes.Where(c => c.CafeId == id).OrderBy(c => c.Price).ToListAsync();
             if (id == null)
             {
                 return NotFound();
@@ -40,14 +44,17 @@ namespace homework_64_Atai.Controllers
             {
                 return NotFound();
             }
-
-            return View(cafe);
+            var vndm = new CafeAndDishesViewModel
+            {
+                Cafe = cafe,
+                Dishes = dishes
+            };
+            return View(vndm);
         }
 
         // GET: Cafes/Create
         public IActionResult Create()
-        {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+        { 
             return View();
         }
 
@@ -60,6 +67,9 @@ namespace homework_64_Atai.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                User u = await _userManager.GetUserAsync(User);
+                cafe.UserId = u.Id; 
                 _context.Add(cafe);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

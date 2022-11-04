@@ -1,4 +1,4 @@
-﻿@model homework_64_Atai.Models.Cafe
+﻿@model homework_64_Atai.ViewModels.CafeAndDishesViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -11,32 +11,68 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model=> model.Cafe.Name)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Cafe.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
+            @Html.DisplayNameFor(model => model.Cafe.Image)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
+            @Html.DisplayFor(model => model.Cafe.Image)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Cafe.Description)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Cafe.Description)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
+            @Html.DisplayNameFor(model => model.Cafe.User)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
-        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Cafe.Id">Edit</a> |
+    <a asp-action="Create" asp-controller="Dishes" asp-route-cafeId="@Model.Cafe.Id">Add dish</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<h2>Dishes</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+               Description
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Dishes) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-controller="Dishes" asp-route-id="@item.Id" asp-route-cafeId="@Model.Cafe.Id">Edit</a> |
+                <a asp-action="Details" asp-controller="Dishes" asp-route-id="@item.Id" asp-route-cafeId="@Model.Cafe.Id">Details</a> |
+                <a asp-action="Delete" asp-controller="Dishes" asp-route-id="@item.Id" asp-route-cafeId="@Model.Cafe.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

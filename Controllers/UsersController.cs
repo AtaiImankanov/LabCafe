@@ -9,92 +9,85 @@ using homework_64_Atai.Models;
 
 namespace homework_64_Atai.Controllers
 {
-    public class DishesController : Controller
+    public class UsersController : Controller
     {
-        private readonly Models.AppContext _context;
+        private readonly AppContext _context;
 
-        public DishesController(Models.AppContext context)
+        public UsersController(AppContext context)
         {
             _context = context;
         }
 
-        // GET: Dishes
+        // GET: Users
         public async Task<IActionResult> Index()
         {
-            var appContext = _context.Dishes.Include(d => d.Cafe);
-            return View(await appContext.ToListAsync());
+            return View(await _context.Users.ToListAsync());
         }
 
-        // GET: Dishes/Details/5
-        public async Task<IActionResult> Details(int? id, int cafeId)
+        // GET: Users/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            ViewBag.CafeId = cafeId;
             if (id == null)
             {
                 return NotFound();
             }
 
-            var dish = await _context.Dishes
-                .Include(d => d.Cafe)
+            var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dish == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(dish);
+            return View(user);
         }
 
-        // GET: Dishes/Create
-        public IActionResult Create(int cafeId)
+        // GET: Users/Create
+        public IActionResult Create()
         {
-            ViewBag.CafeId = cafeId;
             return View();
         }
 
-        // POST: Dishes/Create
+        // POST: Users/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,Description,CafeId")] Dish dish)
+        public async Task<IActionResult> Create([Bind("Role,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User user)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dish);
+                _context.Add(user);
                 await _context.SaveChangesAsync();
-                return Redirect("https://localhost:44365/Cafes/Details/" + dish.CafeId);
+                return RedirectToAction(nameof(Index));
             }
-            ViewData["CafeId"] = new SelectList(_context.Cafes, "Id", "Id", dish.CafeId);
-            return View(dish);
+            return View(user);
         }
 
-        // GET: Dishes/Edit/5
-        public async Task<IActionResult> Edit(int? id, int cafeId)
+        // GET: Users/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            ViewBag.CafeId = cafeId;
             if (id == null)
             {
                 return NotFound();
             }
 
-            var dish = await _context.Dishes.FindAsync(id);
-            if (dish == null)
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-            ViewData["CafeId"] = new SelectList(_context.Cafes, "Id", "Id", dish.CafeId);
-            return View(dish);
+            return View(user);
         }
 
-        // POST: Dishes/Edit/5
+        // POST: Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Description,CafeId")] Dish dish)
+        public async Task<IActionResult> Edit(int id, [Bind("Role,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User user)
         {
-            if (id != dish.Id)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -103,12 +96,12 @@ namespace homework_64_Atai.Controllers
             {
                 try
                 {
-                    _context.Update(dish);
+                    _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DishExists(dish.Id))
+                    if (!UserExists(user.Id))
                     {
                         return NotFound();
                     }
@@ -117,46 +110,43 @@ namespace homework_64_Atai.Controllers
                         throw;
                     }
                 }
-                return Redirect("https://localhost:44365/Cafes/Details/" + dish.CafeId);
+                return RedirectToAction(nameof(Index));
             }
-            ViewData["CafeId"] = new SelectList(_context.Cafes, "Id", "Id", dish.CafeId);
-            return View(dish);
+            return View(user);
         }
 
-        // GET: Dishes/Delete/5
-        public async Task<IActionResult> Delete(int? id, int cafeId)
+        // GET: Users/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            ViewBag.CafeId = cafeId;
             if (id == null)
             {
                 return NotFound();
             }
 
-            var dish = await _context.Dishes
-                .Include(d => d.Cafe)
+            var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dish == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(dish);
+            return View(user);
         }
 
-        // POST: Dishes/Delete/5
+        // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var dish = await _context.Dishes.FindAsync(id);
-            _context.Dishes.Remove(dish);
+            var user = await _context.Users.FindAsync(id);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DishExists(int id)
+        private bool UserExists(int id)
         {
-            return _context.Dishes.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }
